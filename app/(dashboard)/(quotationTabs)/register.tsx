@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const units = () => {
+const Register = () => {
   return (
     <View>
-      <Text>units</Text>
+      <Text>register</Text>
     </View>
   );
 };
 
-export default units;
+export default Register;

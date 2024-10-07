@@ -11,10 +11,11 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import Login from "./(auth)/login";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Drawer } from "expo-router/drawer";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
@@ -38,6 +39,8 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)/login" />
         <Stack.Screen name="(auth)/register" />
         <Stack.Screen name="(dashboard)/index" />
+        <Stack.Screen name="(dashboard)/(invoiceTabs)" />
+        <Stack.Screen name="(dashboard)/(quotationTabs)" />
         <Stack.Screen name="(dashboard)/IncomingClients" />
         <Stack.Screen name="(dashboard)/ReservationChamber" />
         <Stack.Screen name="(dashboard)/traider/client" />
@@ -60,32 +63,19 @@ export default function RootLayout() {
         <Stack.Screen name="(dashboard)/economa/settings/articleSubCategories" />
         <Stack.Screen name="(dashboard)/economa/settings/articleType" />
         <Stack.Screen name="(dashboard)/economa/settings/lot" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
-        <Stack.Screen name="(dashboard)/index" />
+        <Stack.Screen name="(dashboard)/settings/bank" />
+        <Stack.Screen name="(dashboard)/settings/identity" />
+        <Stack.Screen name="(dashboard)/settings/identityTypes" />
+        <Stack.Screen name="(dashboard)/settings/nationality" />
+        <Stack.Screen name="(dashboard)/settings/nationalityTypes" />
+        <Stack.Screen name="(dashboard)/settings/paiementTypes" />
+        <Stack.Screen name="(dashboard)/settings/reservationServices" />
+        <Stack.Screen name="(dashboard)/settings/rooms" />
+        <Stack.Screen name="(dashboard)/settings/tax" />
+        <Stack.Screen name="(dashboard)/settings/units" />
+        <Stack.Screen name="(dashboard)/settings/unitTypes" />
+        <Stack.Screen name="(dashboard)/settings/userManagement" />
+        <Stack.Screen name="(dashboard)/settings/userRole" />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
