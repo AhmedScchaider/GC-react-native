@@ -13,7 +13,7 @@ export default function RootLayout() {
   const pathname = usePathname();
 
   if (pathname && !isSignedIn) {
-    return <Redirect href="/(auth)/index" />;
+    return <Redirect href="/(auth)/" />;
   }
 
   return (
