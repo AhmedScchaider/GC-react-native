@@ -15,16 +15,7 @@ const authHeader = {
 };
 
 export async function tokenHeader() {
-  let token =
-    (await getSecureData("TOKEN")) !== "undefined"
-      ? JSON.parse((await getSecureData("TOKEN")) as string)
-      : undefined;
-  console.log(token);
-  if (token && token) {
-    return "Bearer " + token;
-  } else {
-    return undefined;
-  }
+  return getSecureData("TOKEN");
 }
 
 function multipartRequestOptionsPOST(object: any, method: any) {
