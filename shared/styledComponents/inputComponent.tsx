@@ -1,17 +1,18 @@
 import { StyleSheet } from "react-native";
 
-export const btnStyle = StyleSheet.create({
-  loginBtn: {
-    backgroundColor: "red",
+export const inputStyle = StyleSheet.create({
+  authInput: {
     padding: 12,
+    width: "100%",
+    borderStyle: "solid",
+    borderColor: "#aaa",
+    borderWidth: 2,
     borderRadius: 12,
   },
   loginText: {
     color: "white",
-    width: "100%",
-    textAlign: "center",
   },
-  registerBtn: {
+  registerInput: {
     backgroundColor: "green",
     padding: 12,
     borderRadius: 12,

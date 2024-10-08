@@ -1,3 +1,4 @@
+import * as SecureStore from "expo-secure-store";
 import {
   dayToTimeStampMultiplier,
   isTrueOrFalseString,
@@ -141,15 +142,16 @@ export function priceToNumber(price: any) {
 }
 
 export function storeToLocalStorage(data: any) {
-  localStorage.setItem("USER_DATA", JSON.stringify(data));
-  localStorage.setItem("TOKEN", JSON.stringify(data?.token));
-  localStorage.setItem("USER", JSON.stringify(data?.user));
+  console.log("data?.token", data?.token);
+  storeSecureData("USER_DATA", JSON.stringify(data));
+  storeSecureData("TOKEN", JSON.stringify(data?.token));
+  storeSecureData("USER", JSON.stringify(data?.user));
 }
 
 export function storeNewToken(data: any) {
-  localStorage.setItem("USER_DATA", JSON.stringify(data));
-  localStorage.setItem("REFRESH_TOKEN", JSON.stringify(data?.refreshToken));
-  localStorage.setItem("TOKEN", JSON.stringify(data?.data?.token));
+  storeSecureData("USER_DATA", JSON.stringify(data));
+  storeSecureData("REFRESH_TOKEN", JSON.stringify(data?.refreshToken));
+  storeSecureData("TOKEN", JSON.stringify(data?.data?.token));
 }
 
 export function dateFormat(date: any) {
@@ -2556,6 +2558,24 @@ export const ticketsSearchFilter = (oneItem: any, searchs: any) => {
       : false)
   );
 };
+
+export const storeSecureData = async (key: any, value: any) => {
+  try {
+    await SecureStore.setItemAsync(key, value);
+    console.log("Data stored securely");
+  } catch (error) {
+    console.error("Error storing secure data", error);
+  }
+};
+
+export const getSecureData = async (key: any) => {
+  try {
+    return await SecureStore.getItemAsync(key);
+  } catch (error) {
+    console.error("Error storing secure data", error);
+  }
+};
+
 /*
  * Invoice reservation with tickets in reservations and stand alone
  * */

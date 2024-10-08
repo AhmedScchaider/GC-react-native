@@ -1,3 +1,5 @@
+import { getSecureData, storeSecureData } from "./helper";
+
 const authHeader = {
   tokenHeader,
   requestOptionsPOST,
@@ -12,11 +14,12 @@ const authHeader = {
   handleResponse,
 };
 
-export function tokenHeader() {
+export async function tokenHeader() {
   let token =
-    localStorage.getItem("TOKEN") !== "undefined"
-      ? JSON.parse(localStorage.getItem("TOKEN") as string)
+    (await getSecureData("TOKEN")) !== "undefined"
+      ? JSON.parse((await getSecureData("TOKEN")) as string)
       : undefined;
+  console.log(token);
   if (token && token) {
     return "Bearer " + token;
   } else {
