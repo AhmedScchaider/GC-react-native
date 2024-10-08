@@ -7,23 +7,14 @@ import {
 
 const userService = {
   login,
-  // updateUser,
-  // updatePassword,
   getUserProfile,
-  // updateUserAvatar,
-  // getUserCompanyProfile,
-  // updateUserCompanyProfile,
   register,
   registerMultiPart,
   logout,
   forgotPassword,
-  // refreshToken,
   forgottenPassword,
   resetPassword,
   resendVerificationEmail,
-  // socialAuth,
-  // generatePhoneCode,
-  // verifyPhoneCode
 };
 
 function login(user: any) {
@@ -32,16 +23,16 @@ function login(user: any) {
     authHeader.requestOptionsPOSTAnonimus(user, "POST"),
   )
     .then(authHeader.handleResponse)
-    .then((data) => {
-      console.log("data?.token", data?.token);
-      storeToLocalStorage(data);
+    .then((data: any) => {
+      // storeToLocalStorage(data);
       return data;
-    });
+    })
+    .catch((e) => console.log(e));
 }
 function getUserProfile() {
   return fetch(
     reduxConstants.MAIN_API_URL + reduxConstants.ME,
-    authHeader.requestOptionsGET("GET") as RequestInit,
+    authHeader.requestOptionsGET("GET") as any,
   )
     .then(authHeader.handleResponse)
     .then((data) => {
@@ -52,11 +43,11 @@ function getUserProfile() {
 function registerMultiPart(user: any) {
   return fetch(
     reduxConstants.MAIN_API_URL + reduxConstants.REGISTER_PATH,
-    authHeader.multipartRequestOptionsPOST(user, "POST") as RequestInit,
+    authHeader.multipartRequestOptionsPOST(user, "POST") as any,
   )
     .then(authHeader.handleResponse)
     .then((data) => {
-      storeToLocalStorage(data);
+      // storeToLocalStorage(data);
       return data;
     });
 }
@@ -64,7 +55,7 @@ function registerMultiPart(user: any) {
 function register(user: any) {
   return fetch(
     mainURL + reduxConstants.REGISTER_PATH,
-    authHeader.requestOptionsPOST(user, "POST") as RequestInit,
+    authHeader.requestOptionsPOST(user, "POST") as any,
   )
     .then(authHeader.handleResponse)
     .then((data) => {
@@ -88,7 +79,7 @@ function logout() {
 function forgotPassword(email: any) {
   return fetch(
     "/api/forgot_password",
-    authHeader.requestOptionsPOST(email, "POST") as RequestInit,
+    authHeader.requestOptionsPOST(email, "POST") as any,
   )
     .then(authHeader.handleResponse)
     .then((data) => {
@@ -125,7 +116,7 @@ function forgottenPassword(email: any) {
 function resetPassword(passwordData: any) {
   return fetch(
     reduxConstants.MAIN_API_URL + reduxConstants.RESET_PASSWORD_PATH,
-    authHeader.requestOptionsPOST(passwordData, "POST") as RequestInit,
+    authHeader.requestOptionsPOST(passwordData, "POST") as any,
   )
     .then(authHeader.handleResponse)
     .then((data) => {
@@ -135,7 +126,7 @@ function resetPassword(passwordData: any) {
 function resendVerificationEmail(data: any) {
   return fetch(
     reduxConstants.MAIN_API_URL + reduxConstants.RESENED_FORGOTTEN_PASSWORD,
-    authHeader.requestOptionsPOST(data, "POST") as RequestInit,
+    authHeader.requestOptionsPOST(data, "POST") as any,
   )
     .then(authHeader.handleResponse)
     .then((data) => {
