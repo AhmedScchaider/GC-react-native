@@ -6,10 +6,11 @@ import {
 import userService from "../../services/user";
 import { RootState } from "../store";
 import { objectAPIInitialState } from "../types";
+import axios from "axios";
 
 export const userLogin = createAsyncThunk("user/login", async (user: any) => {
   const response = await userService.login(user);
-  console.log(response?.token);
+  axios.defaults.headers.common["Authorization"] = `Bearer ${response?.token}`;
   return response;
 });
 export const userSignup = createAsyncThunk("user/signup", async (user: any) => {

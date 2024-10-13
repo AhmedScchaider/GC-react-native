@@ -1,31 +1,19 @@
+import { keys } from "../constants/constants";
 import { getSecureData, storeSecureData } from "./helper";
 
-const authHeader = {
-  tokenHeader,
-  requestOptionsPOST,
-  requestOptionsPOSTAnonimus,
-  requestOptionsGETGzip,
-  requestOptionsGET,
-  requestOptionsGETAnonimus,
-  requestOptionsGET_Token,
-  multipartRequestOptionsPOST,
-  requestOptionsDELETE,
-  handleResponseGzip,
-  handleResponse,
+export const tokenHeader = () => {
+  return getSecureData(keys.TOKEN);
 };
 
-export async function tokenHeader() {
-  return getSecureData("TOKEN");
-}
-
-function multipartRequestOptionsPOST(object: any, method: any) {
+async function multipartRequestOptionsPOST(object: any, method: any) {
+  const token = await tokenHeader();
   const requestOptions = {
     method: method,
     headers: {
       // "Content-Type": "application/json",
       // "Content-Type": "multipart/form-data",
       //"X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-      Authorization: tokenHeader(),
+      Authorization: token,
     },
     body: object,
   };
@@ -44,23 +32,25 @@ function requestOptionsPOSTAnonimus(object: any, method: any) {
 
   return requestOptions;
 }
-function requestOptionsPOST(object: any, method: any) {
+async function requestOptionsPOST(object: any, method: any) {
+  const token = await tokenHeader();
   const requestOptions = {
     method: method,
     headers: {
       "Content-Type": "application/json",
       // "Accept": "application/json",
-      Authorization: tokenHeader(),
+      Authorization: token,
     },
     body: JSON.stringify(object),
   };
 
   return requestOptions;
 }
-function requestOptionsDELETE(method: any) {
+async function requestOptionsDELETE(method: any) {
+  const token = await tokenHeader();
   const requestOptions = {
     method: method,
-    headers: { Authorization: tokenHeader() },
+    headers: { Authorization: token },
   };
 
   return requestOptions;
@@ -87,7 +77,8 @@ function requestOptionsGETAnonimus(method: any) {
 
   return requestOptions;
 }
-function requestOptionsGETGzip(method: any) {
+async function requestOptionsGETGzip(method: any) {
+  const token = await tokenHeader();
   const requestOptions = {
     method: method,
     headers: {
@@ -97,19 +88,20 @@ function requestOptionsGETGzip(method: any) {
       // "Access-Control-Allow-Origin": "*",
       // "Content-Type": "application/json",
       // "Accept": "application/json",
-      Authorization: tokenHeader(),
+      Authorization: token,
     },
   };
 
   return requestOptions;
 }
-function requestOptionsGET(method: any) {
+async function requestOptionsGET(method: any) {
+  const token = await tokenHeader();
   const requestOptions = {
     method: method,
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: tokenHeader(),
+      Authorization: token,
     },
   };
 
@@ -150,35 +142,27 @@ function handleResponseGzip(response: any) {
   //   return data;
   // });
 }
-function handleResponse(response: any) {
-  return response.text().then((text: any) => {
-    var data: any = "";
-    if (response.status == 200) {
-      if (
-        /^[\],:{}\s]*$/.test(
-          text
-            .replace(/\\["\\\/bfnrtu]/g, "@")
-            .replace(
-              /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
-              "]",
-            )
-            .replace(/(?:^|:|,)(?:\s*\[)+/g, ""),
-        )
-      ) {
-        data = text && JSON.parse(text);
-      }
-    } else {
-      if (response.status === 401) {
-        window.location.href = "/";
-        // auto logout if 401 response returned from api
-        // location.reload();
-      }
-
-      const error = (data && data?.message) || response.statusText;
-      return Promise.reject(error);
-    }
-
+async function handleResponse(response: any) {
+  try {
+    const data = await response.json();
+    console.log("response", response);
     return data;
-  });
+  } catch (error) {
+    return error;
+  }
 }
+
+const authHeader = {
+  tokenHeader,
+  requestOptionsPOST,
+  requestOptionsPOSTAnonimus,
+  requestOptionsGETGzip,
+  requestOptionsGET,
+  requestOptionsGETAnonimus,
+  requestOptionsGET_Token,
+  multipartRequestOptionsPOST,
+  requestOptionsDELETE,
+  handleResponseGzip,
+  handleResponse,
+};
 export default authHeader;

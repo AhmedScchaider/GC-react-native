@@ -16,10 +16,7 @@ export const selectCampain = createAsyncThunk(
     const response = await generalService.getGeneral(
       reduxConstants.MAIN_API_URL + reduxConstants.GET_CAMPAIN + dataId,
     );
-    await storeSecureData(
-      "SELECTED_COMPAIGN",
-      JSON.stringify((response as any)?.data),
-    );
+    await storeSecureData("SELECTED_COMPAIGN", (response as any)?.data);
     return (response as any)?.data;
   },
 );

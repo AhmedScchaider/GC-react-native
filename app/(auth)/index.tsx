@@ -5,11 +5,10 @@ import { useRouter } from "expo-router";
 import { btnStyle } from "@/shared/styledComponents/btnComponent";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/shared/store/store";
-import { userLogin, userSignup } from "@/shared/store/slices/user";
+import { userLogin } from "@/shared/store/slices/user";
 import TextInputComponent from "@/components/TextInputComponent";
 import { inputStyle } from "@/shared/styledComponents/inputComponent";
 import { containerStyle } from "@/shared/styledComponents/containerComponent";
-import { tokenHeader } from "@/shared/helpers/auth-header";
 
 const Login = () => {
   const router = useRouter();
@@ -18,7 +17,6 @@ const Login = () => {
 
   const handleLogin = () => {
     dispatch(userLogin(user))?.then((thenData: any) => {
-      console.log(tokenHeader());
       router.push("/dashboard");
     });
   };
@@ -26,7 +24,6 @@ const Login = () => {
   const handleOnChange = (name: any, value: any) => {
     setUser({ ...user, [name]: value });
   };
-  console.log(tokenHeader());
   return (
     <View style={containerStyle.authContainer}>
       <TextInputComponent

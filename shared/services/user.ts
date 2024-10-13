@@ -23,11 +23,11 @@ function login(user: any) {
     authHeader.requestOptionsPOSTAnonimus(user, "POST"),
   )
     .then(authHeader.handleResponse)
-    .then((data) => {
-      console.log("data?.token", data?.token);
-      storeToLocalStorage(data);
+    .then((data: any) => {
+      // storeToLocalStorage(data);
       return data;
-    });
+    })
+    .catch((e) => console.log(e));
 }
 function getUserProfile() {
   return fetch(
@@ -47,7 +47,7 @@ function registerMultiPart(user: any) {
   )
     .then(authHeader.handleResponse)
     .then((data) => {
-      storeToLocalStorage(data);
+      // storeToLocalStorage(data);
       return data;
     });
 }

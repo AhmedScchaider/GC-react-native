@@ -3,7 +3,7 @@ import "react-native-reanimated";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Redirect, usePathname } from "expo-router";
 import { tokenHeader } from "@/shared/helpers/auth-header";
 
@@ -12,11 +12,17 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [isSignedIn, setIsSignedIn] = useState(true);
   const pathname = usePathname();
+  const [localToken, setLocalToken] = useState("");
 
-  if (pathname && !tokenHeader()) {
-    return <Redirect href="/(auth)/" />;
+  if (pathname && localToken?.length > 0) {
+    return <Redirect href="/(auth)" />;
   }
 
+  useEffect(() => {
+    tokenHeader()?.then((localTokenFromHeader: any) => {
+      setLocalToken(localTokenFromHeader?.token);
+    });
+  }, []);
   return (
     <Drawer>
       <Drawer.Screen

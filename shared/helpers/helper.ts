@@ -2,6 +2,7 @@ import * as SecureStore from "expo-secure-store";
 import {
   dayToTimeStampMultiplier,
   isTrueOrFalseString,
+  keys,
   mainURL,
   ticket_owner,
 } from "../constants/constants";
@@ -142,15 +143,14 @@ export function priceToNumber(price: any) {
 }
 
 export function storeToLocalStorage(data: any) {
-  storeSecureData("USER_DATA", data);
-  storeSecureData("TOKEN", data?.token);
-  storeSecureData("USER", data?.user);
+  storeSecureData(keys.USER_DATA, data);
+  storeSecureData(keys.TOKEN, data?.token);
 }
 
 export function storeNewToken(data: any) {
-  storeSecureData("USER_DATA", data);
-  storeSecureData("REFRESH_TOKEN", data?.refreshToken);
-  storeSecureData("TOKEN", data?.data?.token);
+  storeSecureData(keys.USER_DATA, data);
+  storeSecureData(keys.REFRESH_TOKEN, data?.refreshToken);
+  storeSecureData(keys.TOKEN, data?.data?.token);
 }
 
 export function dateFormat(date: any) {
