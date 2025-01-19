@@ -27,8 +27,7 @@ jobs:
         run: |
           npm install -g yarn
           yarn global add expo-cli
-          yarn global add eac-cli
-          eac build --local 
+          npx eac build --local 
 
       # Upload artifacts
       - name: Upload Artifacts
