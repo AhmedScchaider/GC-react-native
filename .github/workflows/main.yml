@@ -1,0 +1,59 @@
+name: Build React Native Expo Apps
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: Build iOS and Android Apps
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          npm install -g expo-cli
+          npm ci
+
+      # Log in to Expo
+      - name: Log in to Expo
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: expo login --non-interactive --token $EXPO_TOKEN
+
+      # Build Android APK
+      - name: Build Android APK
+        run: |
+          expo build:android --no-wait --non-interactive --type apk
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      # Build iOS .tar or .app
+      - name: Build iOS Archive
+        run: |
+          expo build:ios --no-wait --non-interactive --type archive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      # Upload artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            dist/**/*.apk
+            dist/**/*.tar
+            dist/**/*.app
