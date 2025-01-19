@@ -1,0 +1,63 @@
+stages:
+  - setup
+  - build
+  - deploy
+
+variables:
+  NODE_ENV: production
+  EXPO_CLI: true
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - echo "Installing dependencies..."
+  - npm install
+
+setup:
+  stage: setup
+  image: node:18
+  script:
+    - echo "Checking Expo CLI and EAS CLI versions..."
+    - npm install -g expo-cli eas-cli
+    - expo --version
+    - eas --version
+  artifacts:
+    paths:
+      - node_modules/
+
+build_android:
+  stage: build
+  image: node:18
+  script:
+    - echo "Starting Android build..."
+    - npx eas build --platform android --profile production --non-interactive --no-wait
+  only:
+    - main
+  artifacts:
+    paths:
+      - .eas/
+    expire_in: 1 week
+
+build_ios:
+  stage: build
+  image: node:18
+  script:
+    - echo "Starting iOS build..."
+    - npx eas build --platform ios --profile production --non-interactive --no-wait
+  only:
+    - main
+  artifacts:
+    paths:
+      - .eas/
+    expire_in: 1 week
+
+deploy:
+  stage: deploy
+  image: node:18
+  script:
+    - echo "Deployment process initiated."
+    - echo "Fetch and share the build URLs from Expo dashboard for distribution."
+  only:
+    - main
