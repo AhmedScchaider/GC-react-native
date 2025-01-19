@@ -1,0 +1,94 @@
+name: CI/CD for React Native Expo
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Android and iOS Apps
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: npm test
+
+      # Step 5: Log in to Expo
+      - name: Log in to Expo
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: echo "$EXPO_TOKEN" | expo login --non-interactive
+
+      # Step 6: Build Android APK/AAB
+      - name: Build Android app
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: expo build:android --non-interactive
+
+      # Step 7: Build iOS IPA
+      - name: Build iOS app
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: expo build:ios --non-interactive
+
+      # Step 8: Upload build artifacts
+      - name: Upload APK/AAB
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-app
+          path: dist/*.apk
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-app
+          path: dist/*.ipa
+
+  deploy:
+    name: Deploy to Stores
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Deploy Android app
+      - name: Deploy Android app to Google Play
+        if: secrets.GOOGLE_PLAY_JSON_KEY && secrets.EXPO_TOKEN
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+          packageName: com.yourapp.package
+          releaseFiles: dist/*.aab
+
+      # Step 3: Deploy iOS app
+      - name: Deploy iOS app to App Store
+        if: secrets.APPLE_APP_STORE_API_KEY && secrets.EXPO_TOKEN
+        uses: appleboy/app-store-action@v0.5.2
+        with:
+          api_key_path: ${{ secrets.APPLE_APP_STORE_API_KEY }}
+          apple_id: ${{ secrets.APPLE_ID }}
+          app_bundle_id: com.yourapp.bundle
+          ipa_path: dist/*.ipa
