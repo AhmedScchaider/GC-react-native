@@ -26,7 +26,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install -g yarn
-          yarn install -g expo-cli
+          yarn global add expo-cli
           yarn ci
 
       # Log in to Expo
