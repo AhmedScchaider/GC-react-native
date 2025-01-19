@@ -33,7 +33,7 @@ jobs:
       - name: Log in to Expo
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: expo login --non-interactive --token $EXPO_TOKEN
+        run: expo login -t $EXPO_TOKEN
 
       # Build Android APK
       - name: Build Android APK
